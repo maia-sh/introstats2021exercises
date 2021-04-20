@@ -4,50 +4,148 @@ output: learnr::tutorial
 runtime: shiny_prerendered
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-
 ## Topic 1
 
-### Exercise 
+### Exercise
 
-*Here's a simple exercise with an empty code chunk provided for entering the answer.*
+The homework exercises take the form of {learnr} tutorial. Each section asks you to accomplish something with R. In the R console below the question, write an R command (or a sequence of R commands) that accomplish the task.
 
-Write the R code required to add two plus two:
+Here is an example in which the task is already complete:
 
-```{r two-plus-two, exercise=TRUE}
+Calculate the square root of 2.
+
+```{r sqrt-two, exercise = TRUE}
+sqrt(2)
+```
+
+Here is an example with a hint:
+
+Calculate the square root of 3.
+
+```{r sqrt-three, exercise = TRUE}
 
 ```
 
-### Exercise with Code
+```{r sqrt-three-hint}
+sqrt(3)
+```
 
-*Here's an exercise with some prepopulated code as well as `exercise.lines = 5` to provide a bit more initial room to work.*
+Since many of the solutions use extra R functions from the tidyverse package that we learned about in class, I will load it for you here:
 
-Now write a function that adds any two numbers and then call it:
+```{r library-tidyverse, echo = TRUE}
+library(tidyverse)
+```
 
-```{r add-function, exercise=TRUE, exercise.lines = 5}
-add <- function() {
+Show me what directory on your computer you are working in.
+
+```{r getwd, exercise = TRUE}
+
+```
+
+```{r getwd-hint}
+getwd()
+```
+
+Now we'll load the data set 'birth_weights.csv' so that we can work with it in the following questions. We can load it straight into R from where it lives online using its url: "<https://luketudge.github.io/intro-stats-2021/data/birth_weights.csv>".
+
+```{r load-data, exercise = TRUE}
+birth_weights <-
   
-}
 ```
 
-## Topic 2
+```{r load-data-hint}
+birth_weights <-
+  readr::read_csv("https://luketudge.github.io/intro-stats-2021/data/birth_weights.csv")
+```
 
-### Exercise with Hint
+```{r load-data-backend}
+birth_weights <-
+  readr::read_csv("https://luketudge.github.io/intro-stats-2021/data/birth_weights.csv")
+```
 
-*Here's an exercise where the chunk is pre-evaulated via the `exercise.eval` option (so the user can see the default output we'd like them to customize). We also add a "hint" to the correct solution via the chunk immediate below labeled `print-limit-hint`.*
+Now display the birth weights data in an interactive table.
+
+<!--# not sure what package luke means for "interactive" table -->
+
+```{r display-data, exercise = TRUE}
+
+```
+
+```{r display-data-hint}
+birth_weights
+```
 
 Modify the following code to limit the number of rows printed to 5:
 
-```{r print-limit, exercise=TRUE, exercise.eval=TRUE}
-mtcars
+```{r display-data-limit, exercise=TRUE, exercise.eval=TRUE}
+birth_weights
 ```
 
-```{r print-limit-hint}
-head(mtcars)
+```{r display-data-limit-hint}
+# With {base} R
+head(birth_weights, n = 5)
+
+# With {dplyr}
+dplyr::slice_head(birth_weights, n = 5)
+```
+
+
+Show the mean and standard deviation of the birth_weight variable.
+
+```{r mean-sd, exercise = TRUE}
+
+```
+
+```{r mean-sd-hint}
+
+# With {base} R
+mean(birth_weights$birth_weight)
+
+# With {dplyr}
+birth_weights %>% 
+  dplyr::pull(birth_weight) %>% 
+  mean()
+```
+
+Show the interquartile range of the birth_weight variable. This is deliberately something we did not cover in class. If you need to find out first what the interquartile range is and how to ask for it with R, try Google.
+
+```{r iqr, exercise = TRUE}
+
+```
+
+```{r iqr-hint}
+IQR(birth_weights$birth_weight)
+```
+
+The weights in the variable birth_weight are given in kilos. Some people might prefer to know this in pounds. Add a new variable to the data, called birth_weight_lbs, which gives the weight in pounds. Display the table of data again afterwards to check that it has worked.
+
+```{r birth-weight-lbs, exercise = TRUE}
+
+```
+
+```{r birth-weight-lbs-hint}
+kg_to_lbs <- 2.2
+
+birth_weights %>% 
+  dplyr::mutate(birth_weight_lbs = birth_weight * kg_to_lbs)
+```
+
+Show the mean and standard deviation of the birth_weight variable again, but this time only for non-smoking mothers.
+
+```{r mean-sd-non-smokers, exercise = TRUE, exercise.lines = 5}
+
+```
+
+```{r mean-sd-non-smokers-hint}
+birth_weights %>% 
+  dplyr::filter(smoker == "no") %>% 
+  dplyr::pull(birth_weight) %>% 
+  mean()
 ```
 
 ### Quiz
@@ -72,4 +170,3 @@ quiz(
   )
 )
 ```
-
